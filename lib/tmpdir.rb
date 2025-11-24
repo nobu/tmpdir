@@ -187,3 +187,13 @@ class Dir
     end
   end
 end
+
+if defined?(Pathname) and not defined?(Pathname.mktmpdir)
+  def Pathname.mktmpdir
+    if defined?(yield)
+      Dir.mktmpdir {|dir| yield new(dir)}
+    else
+      new(Dir.mktmpdir)
+    end
+  end
+end
